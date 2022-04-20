@@ -4,8 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.checkAuth = void 0;
+const config_1 = require("./../config");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const pass_1 = __importDefault(require("./pass"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 const login = (req) => {
     console.log(req.body);
     return new Promise((resolve, reject) => {
@@ -18,7 +21,7 @@ const login = (req) => {
                 if (err) {
                     reject(err);
                 }
-                const token = jsonwebtoken_1.default.sign(req.user, 'jsihfgsfhgsdkh49r');
+                const token = jsonwebtoken_1.default.sign(req.user, config_1.jwtConstants.secret);
                 resolve(Object.assign(Object.assign({}, user), { token, id: user._id }));
             });
         })(req);

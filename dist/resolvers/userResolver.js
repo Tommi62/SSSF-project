@@ -15,10 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const userModel_1 = __importDefault(require("../models/userModel"));
 const auth_1 = require("../utils/auth");
+const apollo_server_express_1 = require("apollo-server-express");
 exports.default = {
     Query: {
-        user: (parent, args, { user }) => __awaiter(void 0, void 0, void 0, function* () {
-            console.log('userResolver', user);
+        getUserById: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
             // find user by id
             return yield userModel_1.default.findById(args.id);
         }),
@@ -27,6 +30,20 @@ exports.default = {
             // and add to req.body for passport
             req.body = args;
             return yield (0, auth_1.login)(req);
+        }),
+        getUserByUsername: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
+            // find user by username
+            return yield userModel_1.default.findOne({ username: args.username });
+        }),
+        getAllUsers: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
+            // find all users
+            return yield userModel_1.default.find();
         }),
     },
     Mutation: {
@@ -44,4 +61,5 @@ exports.default = {
         }),
     },
 };
+//625fdc5dd6abe2287efe8051
 //# sourceMappingURL=userResolver.js.map

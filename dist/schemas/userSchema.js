@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const apollo_server_express_1 = require("apollo-server-express");
 exports.default = (0, apollo_server_express_1.gql) `
   extend type Query {
-    user(id: ID!): User
+    getUserById(id: ID!): User
     login(username: String!, password: String!): User
+    getUserByUsername(username: String!): User
+    getAllUsers: [User]
   }
   
   extend type Mutation {

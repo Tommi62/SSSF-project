@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import User from '../models/userModel';
 import { login } from '../utils/auth';
+import { AuthenticationError } from 'apollo-server-express';
 
 interface User extends Express.User {
     _id: String,
@@ -8,7 +9,7 @@ interface User extends Express.User {
     password: String,
 }
 
-interface UserArg {
+interface ContextArg {
     user: User,
 }
 
@@ -26,8 +27,10 @@ interface ReqArg {
 
 export default {
   Query: {
-    user: async (parent: any, args: any, { user }: UserArg) => {
-      console.log('userResolver', user);
+    getUserById: async (parent: any, args: any, context: ContextArg) => {
+      if(!context.user) {
+          throw new AuthenticationError('Not authorized');
+      }
       // find user by id
       return await User.findById(args.id);
     },
@@ -36,6 +39,20 @@ export default {
       // and add to req.body for passport
       req.body = args;
       return await login(req);
+    },
+    getUserByUsername: async (parent: any, args: any, context: ContextArg) => {
+        if(!context.user) {
+            throw new AuthenticationError('Not authorized');
+        }
+        // find user by username
+        return await User.findOne({username: args.username});
+    },
+    getAllUsers: async (parent: any, args: any, context: ContextArg) => {
+      if(!context.user) {
+          throw new AuthenticationError('Not authorized');
+      }
+      // find all users
+      return await User.find();
     },
   },
   Mutation: {

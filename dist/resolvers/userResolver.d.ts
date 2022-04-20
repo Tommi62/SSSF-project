@@ -6,7 +6,7 @@ interface User extends Express.User {
     username: String;
     password: String;
 }
-interface UserArg {
+interface ContextArg {
     user: User;
 }
 interface AuthRequest extends Express.Request {
@@ -21,8 +21,10 @@ interface ReqArg {
 }
 declare const _default: {
     Query: {
-        user: (parent: any, args: any, { user }: UserArg) => Promise<any>;
+        getUserById: (parent: any, args: any, context: ContextArg) => Promise<any>;
         login: (parent: any, args: any, { req }: ReqArg) => Promise<unknown>;
+        getUserByUsername: (parent: any, args: any, context: ContextArg) => Promise<any>;
+        getAllUsers: (parent: any, args: any, context: ContextArg) => Promise<any[]>;
     };
     Mutation: {
         registerUser: (parent: any, args: any) => Promise<any>;

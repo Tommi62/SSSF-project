@@ -1,5 +1,9 @@
+import { jwtConstants } from './../config';
 import jwt from 'jsonwebtoken';
 import passport from './pass';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 interface User extends Express.User {
     _id: String,
@@ -31,7 +35,7 @@ const login = (req: AuthRequest) => {
         if (err) {
           reject(err);
         }
-        const token = jwt.sign(req.user!, 'jsihfgsfhgsdkh49r');
+        const token = jwt.sign(req.user!, jwtConstants.secret!);
         resolve({ ...user, token, id: user._id });
       });
     })(req);

@@ -1,4 +1,5 @@
 'use strict';
+import { jwtConstants } from './../config';
 import passport from 'passport';
 import { Strategy as LocalStrategy } from 'passport-local';
 import { Strategy as JWTStrategy, ExtractJwt } from 'passport-jwt';
@@ -30,7 +31,7 @@ passport.use(
   new JWTStrategy(
     {
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      secretOrKey: 'jsihfgsfhgsdkh49r',
+      secretOrKey: jwtConstants.secret,
     },
     (payload, done) => {
       // console.log('jwt payload', payload);
