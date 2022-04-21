@@ -35,6 +35,7 @@ dotenv_1.default.config();
             context: ({ req }) => __awaiter(void 0, void 0, void 0, function* () {
                 if (req) {
                     const user = yield (0, auth_1.checkAuth)(req);
+                    console.log('USER', user);
                     return { user, req };
                 }
             }),

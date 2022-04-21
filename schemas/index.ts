@@ -1,4 +1,7 @@
 import {gql} from 'apollo-server-express';
+import chatThreadSchema from './chatThreadSchema';
+import chattingSchema from './chattingSchema';
+import messageSchema from './messageSchema';
 import userSchema from './userSchema';
 
 const linkSchema = gql`
@@ -13,4 +16,7 @@ const linkSchema = gql`
 export default [
    linkSchema,
    userSchema,
+   chatThreadSchema,
+   messageSchema,
+   chattingSchema
 ];

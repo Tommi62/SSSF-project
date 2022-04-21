@@ -46,6 +46,20 @@ exports.default = {
             return yield userModel_1.default.find();
         }),
     },
+    Chatting: {
+        user(parent, args) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return yield userModel_1.default.findById(parent.user);
+            });
+        }
+    },
+    Message: {
+        user(parent, args) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return yield userModel_1.default.findById(parent.user);
+            });
+        }
+    },
     Mutation: {
         registerUser: (parent, args) => __awaiter(void 0, void 0, void 0, function* () {
             try {
@@ -61,5 +75,6 @@ exports.default = {
         }),
     },
 };
-//625fdc5dd6abe2287efe8051
+//626140730cfc041b2fc7c828
+//6261447aab15ec4f67cbcc3f
 //# sourceMappingURL=userResolver.js.map

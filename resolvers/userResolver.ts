@@ -55,6 +55,16 @@ export default {
       return await User.find();
     },
   },
+  Chatting: {
+    async user(parent: any, args: any) {
+        return await User.findById(parent.user);
+    }
+  },
+  Message: {
+    async user(parent: any, args: any) {
+        return await User.findById(parent.user);
+    }
+  },
   Mutation: {
     registerUser: async (parent: any, args: any) => {
       try {
@@ -73,4 +83,6 @@ export default {
   },
 };
 
-//625fdc5dd6abe2287efe8051
+//626140730cfc041b2fc7c828
+
+//6261447aab15ec4f67cbcc3f

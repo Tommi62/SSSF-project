@@ -41,6 +41,7 @@ interface Context {
       context: async ({ req }: Context) => {
         if (req) {
           const user = await checkAuth(req);
+          console.log('USER', user);
           return { user, req };
         }
       },
