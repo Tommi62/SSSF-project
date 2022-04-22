@@ -25,18 +25,67 @@ mutation {
 }
 ```
 
-### Create a new chat thread
+### Get id and username of the user which has logged in
 
 ```
-mutation {
-    createChatThread(name: "Thread name", private: true) {
+{
+    getLoggedInUser {
         id,
-        name
+        username
     }
 }
 ```
 
-### Create a new chatting instance
+### Get user by user id
+
+```
+{
+    getUserById(id: "someUserId"){
+        id,
+        username,
+    }
+}
+```
+
+### Get user by username
+
+```
+{
+    getUserByUsername(username: "someUsername"){
+        id,
+        username,
+    }
+}
+```
+
+### Get all users
+
+```
+{
+    getAllUsers{
+        id,
+        username,
+    }
+}
+```
+
+### Create a new chat thread
+
+```
+mutation {
+    createChatThread(name: "someName", private: true) {
+        id,
+        name,
+        private,
+        creator {
+            id,
+            username
+        }
+    }
+}
+```
+
+### Create a new chatting instance (Join the chat thread)
 
 ```
 mutation {
@@ -57,12 +106,27 @@ mutation {
 
 ```
 {
-    getChatThreadsByUserId(id: "yourUserId") {
+    getChatThreadsByUserId {
         id,
         thread {
             id,
-            name
-        },
+            name,
+            private,
+            creator {
+                id,
+                username
+            }
+        }
+    }
+}
+```
+
+### Get users by chat thread id
+
+```
+{
+    getUsersByThreadId(id: "someThreadId") {
+        id,
         user {
             id,
             username
@@ -75,7 +139,7 @@ mutation {
 
 ```
 mutation {
-    postMessage(contents: "Something", timestamp: "someTimestamp", thread: "thisThreadsId", user: "youUserId") {
+    postMessage(contents: "Something", timestamp: "someTimestamp", thread: "thisThreadsId") {
         id,
         contents,
         thread {

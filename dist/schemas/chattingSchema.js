@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const apollo_server_express_1 = require("apollo-server-express");
 exports.default = (0, apollo_server_express_1.gql) `
   extend type Query {
-    getChatThreadsByUserId(id: ID!): [Chatting]
+    getChatThreadsByUserId: [Chatting]
+    getUsersByThreadId(id: ID!): [Chatting]
   }
   
   extend type Mutation {

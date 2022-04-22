@@ -12,7 +12,6 @@ exports.default = (0, apollo_server_express_1.gql) `
       timestamp: String!,
       status: String,
       thread: ID!,
-      user: ID!
     ): Message
   }
   

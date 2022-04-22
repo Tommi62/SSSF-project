@@ -54,6 +54,13 @@ export default {
       // find all users
       return await User.find();
     },
+    getLoggedInUser: async (parent: any, args: any, context: ContextArg) => {
+      if(!context.user) {
+          throw new AuthenticationError('Not authorized');
+      }
+      // find all users
+      return { id: context.user._id, username: context.user.username };
+    },
   },
   Chatting: {
     async user(parent: any, args: any) {
@@ -63,6 +70,11 @@ export default {
   Message: {
     async user(parent: any, args: any) {
         return await User.findById(parent.user);
+    }
+  },
+  ChatThread: {
+    async creator(parent: any, args: any) {
+        return await User.findById(parent.creator);
     }
   },
   Mutation: {
@@ -86,3 +98,5 @@ export default {
 //626140730cfc041b2fc7c828
 
 //6261447aab15ec4f67cbcc3f
+
+//626279ef6b6bfb763f28cba7

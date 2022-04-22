@@ -8,6 +8,7 @@ const Schema = mongoose_1.default.Schema;
 const chatThreadSchema = new Schema({
     name: { type: String, required: true },
     private: { type: Boolean, required: true },
+    creator: { type: mongoose_1.default.Types.ObjectId, ref: 'User', required: true },
 });
 exports.default = mongoose_1.default.model('ChatThread', chatThreadSchema);
 //# sourceMappingURL=chatThreadModel.js.map

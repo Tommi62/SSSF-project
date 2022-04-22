@@ -21,8 +21,27 @@ exports.default = {
             if (!context.user) {
                 throw new apollo_server_express_1.AuthenticationError('Not authorized');
             }
-            // find all messages that have given id as thread_id
-            return yield messageModel_1.default.find({ thread: args.id });
+            try {
+                const chattingsByUserId = yield chattingModel_1.default.find({ user: context.user._id });
+                if (chattingsByUserId.length > 0) {
+                    let count = 0;
+                    for (let i = 0; i < chattingsByUserId.length; i++) {
+                        if (chattingsByUserId[i].thread.toString() === args.id) {
+                            count++;
+                        }
+                    }
+                    if (count === 0)
+                        throw new apollo_server_express_1.AuthenticationError('You are trying to get users of a thread you are not included in!');
+                }
+                else {
+                    throw new apollo_server_express_1.AuthenticationError('You are trying to get users of a thread you are not included in!');
+                }
+                // find all messages that have given id as thread_id
+                return yield messageModel_1.default.find({ thread: args.id });
+            }
+            catch (err) {
+                throw new Error(err);
+            }
         }),
     },
     Mutation: {
@@ -35,7 +54,7 @@ exports.default = {
                 if (isUserInThisThread.length === 0) {
                     throw new apollo_server_express_1.AuthenticationError('You are not included in this thread');
                 }
-                const newMessage = new messageModel_1.default(args);
+                const newMessage = new messageModel_1.default(Object.assign(Object.assign({}, args), { user: context.user._id }));
                 const result = yield newMessage.save();
                 return result;
             }

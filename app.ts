@@ -1,4 +1,6 @@
 import express from 'express';
+import expressWs, { WebsocketMethod } from 'express-ws';
+import { WebSocket } from 'ws';
 import { ApolloServer } from 'apollo-server-express';
 import typeDefs from './schemas/index';
 import resolvers from './resolvers/index';
@@ -47,15 +49,72 @@ interface Context {
       },
     });
 
-    const app = express();
+    const { app, getWss, applyTo } = expressWs(express());
+
+    interface threadsArray {
+      thread_id: number,
+    }
+    
+    interface clientArray {
+      user_id: number,
+      threads: threadsArray[],
+      client: WebSocket,
+    }
+    
+    let clients: Array<clientArray> = [];
+
+    app.ws('/', (ws, req) => {
+      ws.on('message', (message: String) => {
+        if (message.toString() !== 'pong') {
+          const clientMessage = JSON.parse(message.toString())
+    
+          if (clientMessage.type === 'client') {
+            console.log('Threads: ', clientMessage.threads)
+            const clientObject = {
+              user_id: clientMessage.user_id,
+              threads: clientMessage.threads,
+              client: ws,
+            }
+            clients.push(clientObject)
+          } else {
+            for (let i = clients.length - 1; i > -1; i--) {
+              if (clientMessage.type === 'newThread') {
+                const threadIdObject = {
+                  thread_id: clientMessage.thread_id
+                }
+                if (clients[i].user_id === clientMessage.user2_id) {
+                  clients[i].threads.push(threadIdObject);
+                } else if (clients[i].user_id === clientMessage.user_id) {
+                  clients[i].threads.push(threadIdObject);
+                }
+              }
+              if (clients[i].client.readyState === 3) {
+                clients.splice(i, 1);
+              } else {
+                for (let j = 0; j < clients[i].threads.length; j++) {
+                  if (clients[i].threads[j].thread_id === clientMessage.thread_id) {
+                    console.log('USERIDCLIENT: ', clients[i].user_id)
+                    console.log('CONNECTION:', clients[i].client.readyState)
+                    clients[i].client.send(message.toString())
+                  }
+                }
+              }
+            }
+          }
+        } else {
+          setTimeout(() => ws.send('ping'), 1000);
+        }
+      });
+      ws.send('ping') //loop start
+  });
 
     await server.start();
 
     server.applyMiddleware({ app });
 
-    app.listen({ port: process.env.PORT || 3000 }, () =>
+    app.listen({ port: process.env.PORT || 3001 }, () =>
       console.log(
-        `🚀 Server ready at http://localhost:3000${server.graphqlPath}`
+        `🚀 Server ready at http://localhost:3001${server.graphqlPath}`
       )
     );
   } catch (e: any) {

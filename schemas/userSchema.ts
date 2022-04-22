@@ -6,6 +6,7 @@ export default gql`
     login(username: String!, password: String!): User
     getUserByUsername(username: String!): User
     getAllUsers: [User]
+    getLoggedInUser: User
   }
   
   extend type Mutation {

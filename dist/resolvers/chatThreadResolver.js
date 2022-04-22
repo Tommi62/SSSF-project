@@ -45,7 +45,7 @@ exports.default = {
                 throw new apollo_server_express_1.AuthenticationError('Not authorized');
             }
             try {
-                const newChatThread = new chatThreadModel_1.default(args);
+                const newChatThread = new chatThreadModel_1.default(Object.assign(Object.assign({}, args), { creator: context.user._id }));
                 const result = yield newChatThread.save();
                 const newChatting = new chattingModel_1.default({ thread: result._id, user: context.user._id });
                 const chattingResult = yield newChatting.save();
@@ -59,4 +59,5 @@ exports.default = {
 };
 //6261419d0cfc041b2fc7c82b
 //626144afab15ec4f67cbcc41
+//626280fc800af36f3a5451ba
 //# sourceMappingURL=chatThreadResolver.js.map

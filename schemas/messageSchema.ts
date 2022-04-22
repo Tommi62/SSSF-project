@@ -11,7 +11,6 @@ export default gql`
       timestamp: String!,
       status: String,
       thread: ID!,
-      user: ID!
     ): Message
   }
   

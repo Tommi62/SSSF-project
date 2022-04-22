@@ -9,14 +9,15 @@ exports.default = (0, apollo_server_express_1.gql) `
   extend type Mutation {
     createChatThread(
       name: String!,
-      private: Boolean!,
+      private: Boolean!
     ): ChatThread
   }
   
   type ChatThread {
     id: ID
     name: String,
-    private: Boolean
+    private: Boolean,
+    creator: User
   }
 `;
 //# sourceMappingURL=chatThreadSchema.js.map

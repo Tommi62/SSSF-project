@@ -7,6 +7,7 @@ exports.default = (0, apollo_server_express_1.gql) `
     login(username: String!, password: String!): User
     getUserByUsername(username: String!): User
     getAllUsers: [User]
+    getLoggedInUser: User
   }
   
   extend type Mutation {

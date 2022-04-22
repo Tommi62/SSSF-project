@@ -1,5 +1,6 @@
 import Message from '../models/messageModel';
 import Chatting from '../models/chattingModel';
+import ChatThread from '../models/chatThreadModel';
 import { AuthenticationError } from 'apollo-server-express';
 
 interface User extends Express.User {
@@ -18,8 +19,24 @@ export default {
       if(!context.user) {
           throw new AuthenticationError('Not authorized');
       }
-      // find all messages that have given id as thread_id
-      return await Message.find({ thread: args.id });
+      try {
+        const chattingsByUserId = await Chatting.find({user: context.user._id});
+        if (chattingsByUserId.length > 0) {
+          let count = 0;
+          for(let i = 0; i < chattingsByUserId.length; i++) {
+            if (chattingsByUserId[i].thread.toString() === args.id) {
+              count++;
+            }
+          }
+          if (count === 0) throw new AuthenticationError('You are trying to get users of a thread you are not included in!');
+        } else {
+          throw new AuthenticationError('You are trying to get users of a thread you are not included in!');
+        }
+        // find all messages that have given id as thread_id
+        return await Message.find({ thread: args.id });
+      } catch (err: any) {
+        throw new Error(err);
+      }
     },
   },
   Mutation: {
@@ -32,7 +49,7 @@ export default {
         if (isUserInThisThread.length === 0) {
             throw new AuthenticationError('You are not included in this thread');
         }
-        const newMessage = new Message(args);
+        const newMessage = new Message({...args, user: context.user._id});
         const result = await newMessage.save();
         return result;
       } catch (err: any) {

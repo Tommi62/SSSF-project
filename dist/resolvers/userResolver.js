@@ -45,6 +45,13 @@ exports.default = {
             // find all users
             return yield userModel_1.default.find();
         }),
+        getLoggedInUser: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
+            // find all users
+            return { id: context.user._id, username: context.user.username };
+        }),
     },
     Chatting: {
         user(parent, args) {
@@ -57,6 +64,13 @@ exports.default = {
         user(parent, args) {
             return __awaiter(this, void 0, void 0, function* () {
                 return yield userModel_1.default.findById(parent.user);
+            });
+        }
+    },
+    ChatThread: {
+        creator(parent, args) {
+            return __awaiter(this, void 0, void 0, function* () {
+                return yield userModel_1.default.findById(parent.creator);
             });
         }
     },
@@ -77,4 +91,5 @@ exports.default = {
 };
 //626140730cfc041b2fc7c828
 //6261447aab15ec4f67cbcc3f
+//626279ef6b6bfb763f28cba7
 //# sourceMappingURL=userResolver.js.map

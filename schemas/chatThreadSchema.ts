@@ -8,13 +8,14 @@ export default gql`
   extend type Mutation {
     createChatThread(
       name: String!,
-      private: Boolean!,
+      private: Boolean!
     ): ChatThread
   }
   
   type ChatThread {
     id: ID
     name: String,
-    private: Boolean
+    private: Boolean,
+    creator: User
   }
 `;
