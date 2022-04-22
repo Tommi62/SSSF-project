@@ -113,9 +113,23 @@ mutation {
             name,
             private,
             creator {
-                id,
                 username
             }
+        }
+    }
+}
+```
+
+### Get all public chat threads
+
+```
+{
+    getPublicChatThreads {
+        id,
+        name,
+        private
+        creator {
+            username
         }
     }
 }
@@ -171,18 +185,6 @@ mutation {
             id,
             username
         }
-    }
-}
-```
-
-### Get all public chat threads
-
-```
-{
-    getPublicChatThreads {
-        id,
-        name,
-        private
     }
 }
 ```
