@@ -85,7 +85,7 @@ mutation {
 }
 ```
 
-### Create a new chatting instance (Join the chat thread)
+### Create a new chatting instance (Join a chat thread)
 
 ```
 mutation {
