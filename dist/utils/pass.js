@@ -19,7 +19,6 @@ const passport_jwt_1 = require("passport-jwt");
 const userModel_1 = __importDefault(require("../models/userModel"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 passport_1.default.use(new passport_local_1.Strategy((username, password, done) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('localstrategy', username, password);
     // get user by username (in this case email) from userModel/getUserLogin
     const user = yield userModel_1.default.findOne({ username });
     // if user is undefined

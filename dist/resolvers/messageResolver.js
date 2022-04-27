@@ -31,13 +31,41 @@ exports.default = {
                         }
                     }
                     if (count === 0)
-                        throw new apollo_server_express_1.AuthenticationError('You are trying to get users of a thread you are not included in!');
+                        throw new apollo_server_express_1.AuthenticationError('You are trying to get messages of a thread you are not included in!');
                 }
                 else {
-                    throw new apollo_server_express_1.AuthenticationError('You are trying to get users of a thread you are not included in!');
+                    throw new apollo_server_express_1.AuthenticationError('You are trying to get messages of a thread you are not included in!');
                 }
                 // find all messages that have given id as thread_id
-                return yield messageModel_1.default.find({ thread: args.id });
+                if (args.messageLimit === 0)
+                    return yield messageModel_1.default.find({ thread: args.id });
+                return yield messageModel_1.default.find({ thread: args.id }).limit(args.messageLimit);
+            }
+            catch (err) {
+                throw new Error(err);
+            }
+        }),
+        getLastMessageByThreadId: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
+            try {
+                const chattingsByUserId = yield chattingModel_1.default.find({ user: context.user._id });
+                if (chattingsByUserId.length > 0) {
+                    let count = 0;
+                    for (let i = 0; i < chattingsByUserId.length; i++) {
+                        if (chattingsByUserId[i].thread.toString() === args.id) {
+                            count++;
+                        }
+                    }
+                    if (count === 0)
+                        throw new apollo_server_express_1.AuthenticationError('You are trying to get messages of a thread you are not included in!');
+                }
+                else {
+                    throw new apollo_server_express_1.AuthenticationError('You are trying to get messages of a thread you are not included in!');
+                }
+                // find all messages that have given id as thread_id
+                return yield messageModel_1.default.find({ thread: args.id }).limit(1).sort({ _id: -1 });
             }
             catch (err) {
                 throw new Error(err);

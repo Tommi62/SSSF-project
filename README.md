@@ -168,11 +168,32 @@ mutation {
 }
 ```
 
-### Get messages by thread id
+### Get messages by thread id (If you do not want limit result use messageLimit: 0)
 
 ```
 {
-    getMessagesByThreadId(id: "someThreadId") {
+    getMessagesByThreadId(id: "someThreadId", messageLimit: 0) {
+        id,
+        contents,
+        timestamp,
+        status,
+        thread {
+            id,
+            name
+        },
+        user {
+            id,
+            username
+        }
+    }
+}
+```
+
+### Get last message by thread id
+
+```
+{
+    getLastMessageByThreadId(id: "someThreadId") {
         id,
         contents,
         timestamp,

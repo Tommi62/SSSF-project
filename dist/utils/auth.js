@@ -15,7 +15,7 @@ const login = (req) => {
         pass_1.default.authenticate('local', { session: false }, (err, user, info) => {
             console.log('login', err, user, info);
             if (err || !user) {
-                reject(info.message);
+                reject('Wrong username or password');
             }
             req.login(user, { session: false }, (err) => {
                 if (err) {

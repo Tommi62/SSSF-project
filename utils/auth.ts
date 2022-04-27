@@ -29,7 +29,7 @@ const login = (req: AuthRequest) => {
     passport.authenticate('local', { session: false }, (err: Error, user: User, info: Info) => {
       console.log('login', err, user, info);
       if (err || !user) {
-        reject(info.message);
+        reject('Wrong username or password');
       }
       req.login(user, { session: false }, (err: Error) => {
         if (err) {

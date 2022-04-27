@@ -47,6 +47,7 @@ exports.default = {
         }),
         getLoggedInUser: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
             if (!context.user) {
+                console.log('NULLL');
                 throw new apollo_server_express_1.AuthenticationError('Not authorized');
             }
             // find all users

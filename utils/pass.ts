@@ -8,7 +8,6 @@ import bcrypt from 'bcrypt';
 
 passport.use(
   new LocalStrategy(async (username, password, done) => {
-    console.log('localstrategy', username, password);
     // get user by username (in this case email) from userModel/getUserLogin
     const user = await User.findOne({ username });
     // if user is undefined

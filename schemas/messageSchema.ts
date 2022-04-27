@@ -2,7 +2,8 @@ import {gql} from 'apollo-server-express';
 
 export default gql`
   extend type Query {
-    getMessagesByThreadId(id: ID!): [Message]
+    getMessagesByThreadId(id: ID!, messageLimit: Int!): [Message]
+    getLastMessageByThreadId(id: ID!): [Message]
   }
   
   extend type Mutation {

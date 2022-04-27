@@ -43,7 +43,6 @@ interface Context {
       context: async ({ req }: Context) => {
         if (req) {
           const user = await checkAuth(req);
-          console.log('USER', user);
           return { user, req };
         }
       },
@@ -52,7 +51,7 @@ interface Context {
     const { app, getWss, applyTo } = expressWs(express());
 
     interface threadsArray {
-      thread_id: number,
+      thread_id: string,
     }
     
     interface clientArray {
