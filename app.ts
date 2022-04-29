@@ -78,12 +78,17 @@ interface Context {
           } else {
             for (let i = clients.length - 1; i > -1; i--) {
               if (clientMessage.type === 'newThread') {
+                console.log('NewThread', clientMessage);
                 const threadIdObject = {
-                  thread_id: clientMessage.thread_id
+                  thread_id: clientMessage.thread.id,
+                  thread_name: clientMessage.thread.name
                 }
-                if (clients[i].user_id === clientMessage.user2_id) {
-                  clients[i].threads.push(threadIdObject);
-                } else if (clients[i].user_id === clientMessage.user_id) {
+                for(let j = 0; j < clientMessage.user2.length; j++) {
+                  if (clients[i].user_id === clientMessage.user2[j]) {
+                    clients[i].threads.push(threadIdObject);
+                  }
+                }
+                if (clients[i].user_id === clientMessage.user_id) {
                   clients[i].threads.push(threadIdObject);
                 }
               }
@@ -91,10 +96,10 @@ interface Context {
                 clients.splice(i, 1);
               } else {
                 for (let j = 0; j < clients[i].threads.length; j++) {
-                  if (clients[i].threads[j].thread_id === clientMessage.thread_id) {
-                    console.log('USERIDCLIENT: ', clients[i].user_id)
-                    console.log('CONNECTION:', clients[i].client.readyState)
-                    clients[i].client.send(message.toString())
+                  if (clients[i].threads[j].thread_id === clientMessage.thread.id) {
+                    console.log('USERIDCLIENT: ', clients[i].user_id);
+                    console.log('CONNECTION:', clients[i].client.readyState);
+                    clients[i].client.send(message.toString());
                   }
                 }
               }

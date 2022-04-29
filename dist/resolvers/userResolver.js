@@ -32,9 +32,6 @@ exports.default = {
             return yield (0, auth_1.login)(req);
         }),
         getUserByUsername: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
-            if (!context.user) {
-                throw new apollo_server_express_1.AuthenticationError('Not authorized');
-            }
             // find user by username
             return yield userModel_1.default.findOne({ username: args.username });
         }),

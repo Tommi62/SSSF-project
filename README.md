@@ -102,7 +102,7 @@ mutation {
 }
 ```
 
-### Get chat thread by user id
+### Get chat threads by user id
 
 ```
 {

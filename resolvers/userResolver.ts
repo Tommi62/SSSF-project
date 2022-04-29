@@ -41,9 +41,6 @@ export default {
       return await login(req);
     },
     getUserByUsername: async (parent: any, args: any, context: ContextArg) => {
-        if(!context.user) {
-            throw new AuthenticationError('Not authorized');
-        }
         // find user by username
         return await User.findOne({username: args.username});
     },
