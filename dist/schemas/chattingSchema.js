@@ -11,7 +11,8 @@ exports.default = (0, apollo_server_express_1.gql) `
     createChatting(
       thread: ID!,
       user: ID!
-    ): Chatting
+    ): Chatting,
+    deleteChatting(thread: ID!): Chatting
   }
   
   type Chatting {

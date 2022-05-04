@@ -85,6 +85,32 @@ mutation {
 }
 ```
 
+### Modify a chat thread (only creator of the chat thread can do this)
+
+```
+mutation {
+    modifyChatThread(id: "someChatThreadId", name: "modifiedName", private: false) {
+        id,
+        name,
+        private,
+        creator {
+            id,
+            username
+        }
+    }
+}
+```
+
+### Delete a chat thread (only creator of the chat thread can do this)
+
+```
+mutation {
+    deleteChatThread(id: "someChatThreadId") {
+        id
+    }
+}
+```
+
 ### Create a new chatting instance (Join a chat thread)
 
 ```
@@ -98,6 +124,16 @@ mutation {
             id,
             username
         }
+    }
+}
+```
+
+### Delete a chatting instance (Leave chat thread)
+
+```
+mutation {
+    deleteChatting(thread: "someThreadId") {
+        id
     }
 }
 ```
@@ -154,6 +190,25 @@ mutation {
 ```
 mutation {
     postMessage(contents: "Something", timestamp: "someTimestamp", thread: "thisThreadsId") {
+        id,
+        contents,
+        thread {
+            id,
+            name
+        },
+        user {
+            id,
+            username
+        }
+    }
+}
+```
+
+### Delete a new message (only user that posted the message can delete it)
+
+```
+mutation {
+    deleteMessage(id: "someMessageId") {
         id,
         contents,
         thread {

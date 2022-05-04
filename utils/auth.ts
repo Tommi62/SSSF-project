@@ -27,7 +27,6 @@ const login = (req: AuthRequest) => {
   console.log(req.body);
   return new Promise((resolve, reject) => {
     passport.authenticate('local', { session: false }, (err: Error, user: User, info: Info) => {
-      console.log('login', err, user, info);
       if (err || !user) {
         reject('Wrong username or password');
       }

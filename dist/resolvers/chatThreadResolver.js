@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const chatThreadModel_1 = __importDefault(require("../models/chatThreadModel"));
 const chattingModel_1 = __importDefault(require("../models/chattingModel"));
+const messageModel_1 = __importDefault(require("../models/messageModel"));
 const apollo_server_express_1 = require("apollo-server-express");
 exports.default = {
     Query: {
@@ -48,8 +49,41 @@ exports.default = {
                 const newChatThread = new chatThreadModel_1.default(Object.assign(Object.assign({}, args), { creator: context.user._id }));
                 const result = yield newChatThread.save();
                 const newChatting = new chattingModel_1.default({ thread: result._id, user: context.user._id });
-                const chattingResult = yield newChatting.save();
+                yield newChatting.save();
                 return result;
+            }
+            catch (err) {
+                throw new Error(err);
+            }
+        }),
+        deleteChatThread: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
+            try {
+                const chatThread = yield chatThreadModel_1.default.findById(args.id);
+                if (chatThread.creator.toString() !== context.user._id) {
+                    throw new apollo_server_express_1.AuthenticationError('You can only delete chat threads which you have created!');
+                }
+                const deleteThread = yield chatThreadModel_1.default.findByIdAndDelete(args.id);
+                yield chattingModel_1.default.deleteMany({ thread: args.id });
+                yield messageModel_1.default.deleteMany({ thread: args.id });
+                return deleteThread;
+            }
+            catch (err) {
+                throw new Error(err);
+            }
+        }),
+        modifyChatThread: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
+            try {
+                const chatThread = yield chatThreadModel_1.default.findById(args.id);
+                if (chatThread.creator.toString() !== context.user._id) {
+                    throw new apollo_server_express_1.AuthenticationError('You can only modify chat threads which you have created!');
+                }
+                return yield chatThreadModel_1.default.findByIdAndUpdate(args.id, args, { new: true });
             }
             catch (err) {
                 throw new Error(err);

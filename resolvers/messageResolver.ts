@@ -80,5 +80,19 @@ export default {
         throw new Error(err);
       }
     },
+    deleteMessage: async (parent: any, args: any, context: ContextArg) => {
+      if(!context.user) {
+          throw new AuthenticationError('Not authorized');
+      }
+      try {
+        const message = await Message.findById(args.id);
+        if (message.user.toString() !== context.user._id) {
+            throw new AuthenticationError('You can only delete your own messages!');
+        }
+        return Message.findByIdAndDelete(args.id);
+      } catch (err: any) {
+        throw new Error(err);
+      }
+    },
   },
 };

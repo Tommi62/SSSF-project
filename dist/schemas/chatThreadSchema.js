@@ -10,7 +10,9 @@ exports.default = (0, apollo_server_express_1.gql) `
     createChatThread(
       name: String!,
       private: Boolean!
-    ): ChatThread
+    ): ChatThread,
+    deleteChatThread(id: ID!): ChatThread,
+    modifyChatThread(id: ID!, name: String, private: Boolean): ChatThread
   }
   
   type ChatThread {

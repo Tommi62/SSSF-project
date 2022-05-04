@@ -90,6 +90,21 @@ exports.default = {
                 throw new Error(err);
             }
         }),
+        deleteMessage: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
+            try {
+                const message = yield messageModel_1.default.findById(args.id);
+                if (message.user.toString() !== context.user._id) {
+                    throw new apollo_server_express_1.AuthenticationError('You can only delete your own messages!');
+                }
+                return messageModel_1.default.findByIdAndDelete(args.id);
+            }
+            catch (err) {
+                throw new Error(err);
+            }
+        }),
     },
 };
 //# sourceMappingURL=messageResolver.js.map

@@ -82,6 +82,17 @@ exports.default = {
                 throw new Error(err);
             }
         }),
+        deleteChatting: (parent, args, context) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!context.user) {
+                throw new apollo_server_express_1.AuthenticationError('Not authorized');
+            }
+            try {
+                return yield chattingModel_1.default.deleteOne({ thread: args.thread, user: context.user._id });
+            }
+            catch (err) {
+                throw new Error(err);
+            }
+        }),
     },
 };
 //# sourceMappingURL=chattingResolver.js.map

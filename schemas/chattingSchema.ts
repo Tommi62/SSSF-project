@@ -10,7 +10,8 @@ export default gql`
     createChatting(
       thread: ID!,
       user: ID!
-    ): Chatting
+    ): Chatting,
+    deleteChatting(thread: ID!): Chatting
   }
   
   type Chatting {

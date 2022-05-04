@@ -13,7 +13,6 @@ const login = (req) => {
     console.log(req.body);
     return new Promise((resolve, reject) => {
         pass_1.default.authenticate('local', { session: false }, (err, user, info) => {
-            console.log('login', err, user, info);
             if (err || !user) {
                 reject('Wrong username or password');
             }

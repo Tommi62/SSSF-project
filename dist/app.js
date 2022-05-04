@@ -47,7 +47,6 @@ dotenv_1.default.config();
                 if (message.toString() !== 'pong') {
                     const clientMessage = JSON.parse(message.toString());
                     if (clientMessage.type === 'client') {
-                        console.log('Threads: ', clientMessage.threads);
                         const clientObject = {
                             user_id: clientMessage.user_id,
                             threads: clientMessage.threads,
@@ -58,7 +57,6 @@ dotenv_1.default.config();
                     else {
                         for (let i = clients.length - 1; i > -1; i--) {
                             if (clientMessage.type === 'newThread') {
-                                console.log('NewThread', clientMessage);
                                 const threadIdObject = {
                                     thread_id: clientMessage.thread.id,
                                     thread_name: clientMessage.thread.name
@@ -78,8 +76,6 @@ dotenv_1.default.config();
                             else {
                                 for (let j = 0; j < clients[i].threads.length; j++) {
                                     if (clients[i].threads[j].thread_id === clientMessage.thread.id) {
-                                        console.log('USERIDCLIENT: ', clients[i].user_id);
-                                        console.log('CONNECTION:', clients[i].client.readyState);
                                         clients[i].client.send(message.toString());
                                     }
                                 }

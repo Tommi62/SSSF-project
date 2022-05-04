@@ -73,5 +73,15 @@ export default {
         throw new Error(err);
       }
     },
+    deleteChatting: async (parent: any, args: any, context: ContextArg) => {
+      if(!context.user) {
+          throw new AuthenticationError('Not authorized');
+      }
+      try {
+        return await Chatting.deleteOne({thread: args.thread, user: context.user._id});
+      } catch (err: any) {
+        throw new Error(err);
+      }
+    },
   },
 };

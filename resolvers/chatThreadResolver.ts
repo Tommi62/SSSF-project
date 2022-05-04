@@ -1,5 +1,6 @@
 import ChatThread from '../models/chatThreadModel';
 import Chatting from '../models/chattingModel';
+import Message from '../models/messageModel';
 import { AuthenticationError } from 'apollo-server-express';
 
 interface User extends Express.User {
@@ -41,8 +42,39 @@ export default {
         const newChatThread = new ChatThread({ ...args, creator: context.user._id });
         const result = await newChatThread.save();
         const newChatting = new Chatting({thread: result._id, user: context.user._id})
-        const chattingResult = await newChatting.save();
+        await newChatting.save();
         return result;
+      } catch (err: any) {
+        throw new Error(err);
+      }
+    },
+    deleteChatThread: async (parent: any, args: any, context: ContextArg) => {
+      if(!context.user) {
+          throw new AuthenticationError('Not authorized');
+      }
+      try {
+        const chatThread = await ChatThread.findById(args.id);
+        if (chatThread.creator.toString() !== context.user._id) {
+          throw new AuthenticationError('You can only delete chat threads which you have created!');
+        }
+        const deleteThread = await ChatThread.findByIdAndDelete(args.id);
+        await Chatting.deleteMany({thread: args.id});
+        await Message.deleteMany({thread: args.id});
+        return deleteThread;
+      } catch (err: any) {
+        throw new Error(err);
+      }
+    },
+    modifyChatThread: async (parent: any, args: any, context: ContextArg) => {
+      if(!context.user) {
+          throw new AuthenticationError('Not authorized');
+      }
+      try {
+        const chatThread = await ChatThread.findById(args.id);
+        if (chatThread.creator.toString() !== context.user._id) {
+          throw new AuthenticationError('You can only modify chat threads which you have created!');
+        }
+        return await ChatThread.findByIdAndUpdate(args.id, args, {new: true});
       } catch (err: any) {
         throw new Error(err);
       }

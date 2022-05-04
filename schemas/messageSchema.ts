@@ -12,7 +12,8 @@ export default gql`
       timestamp: String!,
       status: String,
       thread: ID!,
-    ): Message
+    ): Message,
+    deleteMessage(id: ID!): Message
   }
   
   type Message {
