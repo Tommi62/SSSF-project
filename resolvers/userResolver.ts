@@ -53,7 +53,6 @@ export default {
     },
     getLoggedInUser: async (parent: any, args: any, context: ContextArg) => {
       if(!context.user) {
-          console.log('NULLL');
           throw new AuthenticationError('Not authorized');
       }
       // find all users
@@ -92,9 +91,3 @@ export default {
     },
   },
 };
-
-//626140730cfc041b2fc7c828
-
-//6261447aab15ec4f67cbcc3f
-
-//626279ef6b6bfb763f28cba7

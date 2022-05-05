@@ -81,9 +81,3 @@ export default {
     },
   },
 };
-
-//6261419d0cfc041b2fc7c82b
-
-//626144afab15ec4f67cbcc41
-
-//626280fc800af36f3a5451ba

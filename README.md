@@ -1,5 +1,9 @@
 # SSSF-project
 
+This is backend for [ChatApp](https://tommiov@media-server-tommi.northeurope.cloudapp.azure.com)
+
+All queries except register and login require token. You can get it by creating a new user and logging in. Attach bearer token you got when you logged in to all other queries.
+
 ## Example queries
 
 ### Create a new user
@@ -85,7 +89,7 @@ mutation {
 }
 ```
 
-### Modify a chat thread (only creator of the chat thread can do this)
+### Modify a chat thread (Only creator of the chat thread can do this)
 
 ```
 mutation {
@@ -101,7 +105,7 @@ mutation {
 }
 ```
 
-### Delete a chat thread (only creator of the chat thread can do this)
+### Delete a chat thread (Only creator of the chat thread can do this)
 
 ```
 mutation {
@@ -111,7 +115,7 @@ mutation {
 }
 ```
 
-### Create a new chatting instance (Join a chat thread)
+### Create a new chatting instance (Join a chat thread) (If the thread is private only a user who is included in the thread can do this)
 
 ```
 mutation {
@@ -171,7 +175,7 @@ mutation {
 }
 ```
 
-### Get users by chat thread id
+### Get users by chat thread id (You can only get users from threads you are included in)
 
 ```
 {
@@ -185,7 +189,7 @@ mutation {
 }
 ```
 
-### Post a new message
+### Post a new message (You can only post messages to threads you are included in)
 
 ```
 mutation {
@@ -204,7 +208,7 @@ mutation {
 }
 ```
 
-### Delete a new message (only user that posted the message can delete it)
+### Delete a new message (Only user that posted the message can delete it)
 
 ```
 mutation {
@@ -223,7 +227,7 @@ mutation {
 }
 ```
 
-### Get messages by thread id (If you do not want limit result use messageLimit: 0)
+### Get messages by thread id (If you do not want limit result use messageLimit: 0) (Only users who are included in this thread can do this)
 
 ```
 {
@@ -244,7 +248,7 @@ mutation {
 }
 ```
 
-### Get last message by thread id
+### Get last message by thread id (Only users who are included in this thread can do this)
 
 ```
 {

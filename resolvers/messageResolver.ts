@@ -52,9 +52,9 @@ export default {
               count++;
             }
           }
-          if (count === 0) throw new AuthenticationError('You are trying to get messages of a thread you are not included in!');
+          if (count === 0) throw new AuthenticationError('You are trying to get last message of a thread you are not included in!');
         } else {
-          throw new AuthenticationError('You are trying to get messages of a thread you are not included in!');
+          throw new AuthenticationError('You are trying to get last message of a thread you are not included in!');
         }
         // find all messages that have given id as thread_id
         return await Message.find({ thread: args.id }).limit(1).sort({ _id: -1 });
